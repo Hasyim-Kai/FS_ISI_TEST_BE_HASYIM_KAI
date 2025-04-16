@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 import sys
 from pythonjsonlogger import jsonlogger
@@ -39,8 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
     'todo_api'
 ]
 
@@ -78,7 +80,7 @@ WSGI_APPLICATION = 'be.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
+DATABASES = {    
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'todo_db_python',
@@ -87,6 +89,14 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '',
     }
+    # 'default': {
+    #     'ENGINE': os.environ.get('DB_DRIVER','django.db.backends.postgresql'),
+    #     'NAME': os.environ.get('PG_DB','todo_db_python'),
+    #     'USER': os.environ.get('PG_USER','postgres'),
+    #     'PASSWORD':os.environ.get('PG_PASSWORD','postgres'),
+    #     'HOST': os.environ.get('PG_HOST','localhost'), # uses the container if set, otherwise it runs locally
+    #     'PORT': os.environ.get('PG_PORT','5432'),
+    # }
 }
 
 
@@ -107,6 +117,17 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # ✅ This matches your token logic
+    ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
 
 
 # Internationalization
