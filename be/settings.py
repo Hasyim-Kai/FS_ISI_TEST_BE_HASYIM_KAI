@@ -80,23 +80,15 @@ WSGI_APPLICATION = 'be.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {    
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'todo_db_python',
-        'USER': 'postgres',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': os.environ.get('DB_DRIVER','django.db.backends.postgresql'),
+        'NAME': os.environ.get('PG_DB','todo_db_python'),
+        'USER': os.environ.get('PG_USER','postgres'),
+        'PASSWORD':os.environ.get('PG_PASSWORD','postgres'),
+        'HOST': os.environ.get('PG_HOST','db'), # uses the container if set, otherwise it runs locally
+        'PORT': os.environ.get('PG_PORT','5432'),
     }
-    # 'default': {
-    #     'ENGINE': os.environ.get('DB_DRIVER','django.db.backends.postgresql'),
-    #     'NAME': os.environ.get('PG_DB','todo_db_python'),
-    #     'USER': os.environ.get('PG_USER','postgres'),
-    #     'PASSWORD':os.environ.get('PG_PASSWORD','postgres'),
-    #     'HOST': os.environ.get('PG_HOST','localhost'), # uses the container if set, otherwise it runs locally
-    #     'PORT': os.environ.get('PG_PORT','5432'),
-    # }
 }
 
 
